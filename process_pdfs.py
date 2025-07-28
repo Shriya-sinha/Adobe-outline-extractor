@@ -123,7 +123,7 @@ def process_pdfs():
     try:
         # Get input and output directories
         input_dir = Path("/app/input")
-        output_dir = Path("/app/outputs")
+        output_dir = Path("/app/output")
         
         # Create output directory if it doesn't exist
         output_dir.mkdir(parents=True, exist_ok=True)
@@ -136,7 +136,6 @@ def process_pdfs():
             return
 
         for pdf_file in pdf_files:
-            print(f"\n📄 Processing: {pdf_file.name}")
             
             # Read PDF file bytes
             with open(pdf_file, "rb") as f:
@@ -150,12 +149,7 @@ def process_pdfs():
             with open(json_filename, "w", encoding="utf-8") as f:
                 json.dump(result, f, indent=2, ensure_ascii=False)
             
-            # Save Markdown output
-            md_filename = output_dir / f"{pdf_file.stem}_outline.md"
-            with open(md_filename, "w", encoding="utf-8") as f:
-                f.write(outline_to_markdown(result["outline"]))
-            
-            print(f"✅ Outputs saved as {json_filename.name} and {md_filename.name}")
+            print(f"Processed {pdf_file.name} -> {json_filename.name}")
 
     except Exception as e:
         print(f"Error processing files: {str(e)}")
